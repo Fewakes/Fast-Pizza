@@ -37,6 +37,8 @@ const cartSlice = createSlice({
 
       item.quantity--;
       item.totalPrice = item.quantity * item.unitPrice;
+
+      if (item.quantity === 0) cartSlice.caseReducers.deleteItem(state, action);
     },
     clearCart(state, action) {
       state.cart = [];
@@ -44,21 +46,27 @@ const cartSlice = createSlice({
   },
 });
 
+// Export the action creators from the cart slice
 export const {
-  addItem,
-  deleteItem,
-  increaseItemQuantity,
-  decreaseItemQuantity,
-  clearCart,
+  addItem, // Adds a new item to the cart
+  deleteItem, // Removes an item from the cart by its pizzaId
+  increaseItemQuantity, // Increases the quantity of an item in the cart by 1
+  decreaseItemQuantity, // Decreases the quantity of an item in the cart by 1
+  clearCart, // Removes all items from the cart
 } = cartSlice.actions;
 
+// Export the reducer function for the cart slice
 export default cartSlice.reducer;
 
+// Export additional selectors for getting data from the cart slice
 export const getTotalCartQuantity = (state) =>
-  state.cart.cart.reduce((sum, item) => sum + item.quantity, 0);
-
+  state.cart.cart.reduce((sum, item) => sum + item.quantity, 0); // Returns the total quantity of items in the cart
 export const getTotalCartPrice = (state) =>
-  state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0);
+  state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0); // Returns the total price of items in the cart
+export const getCart = (state) => state.cart.cart; // Returns the entire cart array
 
-export const getCart = (state) => state.cart.cart;
-// 'in big projects, you should use reselect library instead of using this functions for performance reasons'
+// Returns the quantity of a specific item in the cart by its pizzaId
+export const getCurrentQuantityById = (id) => (state) =>
+  state.cart.cart.find((item) => item.pizzaId === id)?.quantity ?? 0;
+
+// use the reselect library instead of these functions for performance reasons in big projects

@@ -1,3 +1,6 @@
+Click here to see the website
+https://fast-react-pizza-fewakes.netlify.app/
+
 Fast-React-Pizza
 Pick the pizza you want, make your order and track the progress!
 
